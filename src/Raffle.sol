@@ -71,6 +71,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
      */
     event EnteredRaffle(address indexed player);
     event WinnerPicked(address indexed winner);
+    event RequestedRaffleWinner(uint256 indexed requestId);
 
     constructor(
         uint256 entranceFee,
@@ -152,12 +153,13 @@ contract Raffle is VRFConsumerBaseV2Plus {
                 )
             })
         );
+        emit RequestedRaffleWinner(requestId);
         // 2. Use the random number to pick a player
         // 3. Be automatically called
     }
 
     function fulfillRandomWords(
-        uint256 requestId,
+        uint256 /*requestId*/,
         uint256[] calldata randomWords
     ) internal override {
         uint256 indexOfWinner = randomWords[0] % s_players.length;
